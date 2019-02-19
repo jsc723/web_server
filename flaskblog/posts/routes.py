@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 from flaskblog import db
 from flaskblog.models import Post
 from flaskblog.posts.forms import PostForm
+from flaskblog.config import Config
 
 posts = Blueprint('posts', __name__)
 
@@ -25,14 +26,16 @@ def new_post():
 @posts.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post)
+    is_admin = current_user.is_authenticated and current_user.email == Config.ADMIN
+    return render_template('post.html', title=post.title, post=post, is_admin=is_admin)
 
 
 @posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
+    is_admin = current_user.is_authenticated and current_user.email == Config.ADMIN
+    if post.author != current_user and not is_admin:
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
@@ -52,7 +55,8 @@ def update_post(post_id):
 @login_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
+    is_admin = current_user.is_authenticated and current_user.email == Config.ADMIN
+    if post.author != current_user and not is_admin:
         abort(403)
     db.session.delete(post)
     db.session.commit()
