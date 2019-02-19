@@ -50,7 +50,7 @@ def logout():
 @users.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    if current_user.emil == Config.ADMIN:
+    if current_user.email == Config.ADMIN:
         flash('Hello admin!', 'success')
     form = UpdateAccountForm()
     if form.validate_on_submit():
