@@ -49,6 +49,7 @@ def logout():
 @users.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
+    flash("test", 'success')
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
