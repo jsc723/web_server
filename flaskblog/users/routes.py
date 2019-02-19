@@ -5,6 +5,7 @@ from flaskblog.models import User, Post
 from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
 from flaskblog.users.utils import save_picture, send_reset_email
+from config import Config
 
 users = Blueprint('users', __name__)
 
@@ -49,7 +50,8 @@ def logout():
 @users.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    flash('Test', 'success')
+    if current_user.emil == Config.ADMIN:
+        flash('Hello admin!', 'success')
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
