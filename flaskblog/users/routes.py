@@ -5,7 +5,7 @@ from flaskblog.models import User, Post
 from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
 from flaskblog.users.utils import save_picture, send_reset_email
-from config import Config
+from flaskblog.config import Config
 
 users = Blueprint('users', __name__)
 
