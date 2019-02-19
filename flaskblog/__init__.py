@@ -32,4 +32,11 @@ def create_app(config_class=Config):
     app.register_blueprint(main)
     app.register_blueprint(errors)
 
+    print('hhh')
+    from flaskblog.models import Admin
+    admin = Admin(email='jsc723@berkeley.edu')
+    db.session.add(admin)
+    db.session.commit()
+    print('kkk')
+
     return app
